@@ -1,15 +1,15 @@
-package org.example.productcatalogservice.models;
+package org.example.productcatalogservice.dtos;
 
 import lombok.Getter;
 import lombok.Setter;
 
 import java.math.BigDecimal;
 
-@Setter
 @Getter
-public class Product extends BaseModel {
+@Setter
+public class ProductDto extends BaseDto {
     private String name;
     private String description;
     private BigDecimal price;
-    private Category category;
+    private CategoryDto category;
 }
