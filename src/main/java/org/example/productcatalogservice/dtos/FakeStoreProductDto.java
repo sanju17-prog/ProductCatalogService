@@ -3,12 +3,12 @@ package org.example.productcatalogservice.dtos;
 import lombok.Getter;
 import lombok.Setter;
 
-@Getter
 @Setter
-public class ProductDto extends BaseDto {
-    private String name;
+@Getter
+public class FakeStoreProductDto extends BaseDto {
+    private String title;
     private String description;
     private Double price;
     private String imageUrl;
-    private CategoryDto category;
+    private String category;
 }

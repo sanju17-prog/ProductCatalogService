@@ -3,13 +3,12 @@ package org.example.productcatalogservice.models;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.math.BigDecimal;
-
 @Setter
 @Getter
 public class Product extends BaseModel {
     private String name;
     private String description;
-    private BigDecimal price;
+    private Double price;
+    private String imageUrl;
     private Category category;
 }
