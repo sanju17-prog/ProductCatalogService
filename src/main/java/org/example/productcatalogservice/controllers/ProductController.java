@@ -1,7 +1,6 @@
 package org.example.productcatalogservice.controllers;
 
 import org.example.productcatalogservice.dtos.CategoryDto;
-import org.example.productcatalogservice.dtos.FakeStoreProductDto;
 import org.example.productcatalogservice.dtos.ProductDto;
 import org.example.productcatalogservice.models.Product;
 import org.example.productcatalogservice.services.IProductService;
@@ -71,7 +70,8 @@ public class ProductController {
     }
 
     @DeleteMapping("/products/{id}")
-    public boolean deleteProduct(@PathVariable Long id) {
-        return true;
+    public Product deleteProduct(@PathVariable Long id) {
+        System.out.println(id);
+        return null;
     }
 }
