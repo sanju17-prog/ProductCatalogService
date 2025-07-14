@@ -1,6 +1,6 @@
 package org.example.productcatalogservice.controllers;
 
-import org.example.productcatalogservice.dtos.CategoryDto;
+import org.example.productcatalogservice.dtos.FakeStoreProductDto;
 import org.example.productcatalogservice.dtos.ProductDto;
 import org.example.productcatalogservice.models.Product;
 import org.example.productcatalogservice.services.IProductService;
@@ -11,13 +11,24 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RestController
+@RequestMapping("/products")
 public class ProductController {
 
     @Autowired
     private IProductService productService;
 
-    @GetMapping("/products/{id}")
-    public ProductDto getProductDetails(@PathVariable Long id) {
+    @GetMapping
+    public List<FakeStoreProductDto> getProducts() {
+        List<Product> products = productService.getAllProducts();
+        List<FakeStoreProductDto> productDtos = new ArrayList<>();
+        for(Product product : products) {
+            productDtos.add(from(product));
+        }
+        return productDtos;
+    }
+
+    @GetMapping("{id}")
+    public FakeStoreProductDto getProductDetails(@PathVariable Long id) {
         Product product = productService.getProductById(id);
         if(product == null) {
             return null;
@@ -25,40 +36,24 @@ public class ProductController {
         return from(product);
     }
 
-    private ProductDto from(Product product){
-        ProductDto productDto = new ProductDto();
-        productDto.setId(product.getId());
-        productDto.setName(product.getName());
-        productDto.setDescription(product.getDescription());
-        productDto.setPrice(product.getPrice());
-        productDto.setImageUrl(product.getImageUrl());
-
-        if(productDto.getCategory() != null) {
-            CategoryDto categoryDto = new CategoryDto();
-            categoryDto.setName(productDto.getCategory().getName());
-            categoryDto.setId(productDto.getCategory().getId());
-            productDto.setCategory(categoryDto);
+    @PutMapping("{id}")
+    public FakeStoreProductDto updateProductDetails(@PathVariable Long id, @RequestBody FakeStoreProductDto fakeStoreProductDto) {
+        Product product = productService.updateProduct(fakeStoreProductDto);
+        if(product == null) {
+            return null;
         }
-
-        return productDto;
-    }
-    @GetMapping("/products")
-    public List<Product> getAllProducts() {
-        List<Product> products = new ArrayList<>();
-        for (int index = 0; index < 10; index++) {
-            Product product = new Product();
-            product.setId((long)index + 1);
-            product.setName("Iphone " + index);
-            products.add(product);
-        }
-        return products;
+        return fakeStoreProductDto;
     }
 
-    @PatchMapping("/products/{id}")
-    public ProductDto updateProductDetails(@PathVariable Long id, @RequestBody ProductDto productDto) {
-        productDto.setId(id);
-        productDto.setName("Iphone " + id);
-        return productDto;
+    private FakeStoreProductDto from(Product product) {
+        FakeStoreProductDto fakeStoreProductDto = new FakeStoreProductDto();
+        fakeStoreProductDto.setId(product.getId());
+        fakeStoreProductDto.setTitle(product.getName());
+        fakeStoreProductDto.setDescription(product.getDescription());
+        fakeStoreProductDto.setPrice(product.getPrice());
+        fakeStoreProductDto.setImageUrl(product.getImageUrl());
+        fakeStoreProductDto.setCategory(product.getCategory().getName());
+        return fakeStoreProductDto;
     }
 
     @PostMapping("/products")
